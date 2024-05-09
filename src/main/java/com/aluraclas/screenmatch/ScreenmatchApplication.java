@@ -1,5 +1,6 @@
 package com.aluraclas.screenmatch;
 
+import com.aluraclas.screenmatch.Principal.EjemploStreams;
 import com.aluraclas.screenmatch.Principal.Principal;
 import com.aluraclas.screenmatch.model.DatosEpisodio;
 import com.aluraclas.screenmatch.model.DatosSerie;
@@ -23,7 +24,11 @@ public class ScreenmatchApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Principal principal = new Principal();
-		principal.muestraElMenu();
+		/*Principal principal = new Principal();
+		principal.muestraElMenu();*/
+		EjemploStreams ejemploStreams = new EjemploStreams();
+		ejemploStreams.muestraEjemplo();
+
+
 
 	}}
