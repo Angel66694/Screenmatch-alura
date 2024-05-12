@@ -99,7 +99,7 @@ public class Principal {
         teclado.nextLine();
 
         datosEpisodios.stream()
-                .filter()
+                //.filter()
                 .findFirst();
 
 
