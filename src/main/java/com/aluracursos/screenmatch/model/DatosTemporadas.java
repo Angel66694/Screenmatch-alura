@@ -1,4 +1,4 @@
-package com.aluraclas.screenmatch.model;
+package com.aluracursos.screenmatch.model;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -6,11 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record DatosTemporadads(
+public record DatosTemporadas(
         @JsonAlias("Season") Integer numero,
-        @JsonAlias("Episodes") List<DatosEpisodio> episodios,
-        @JsonAlias("Episode") Integer numeroEpisodio
-
-) {
-
+        @JsonAlias("Episodes") List<DatosEpisodio> episodios){
 }
