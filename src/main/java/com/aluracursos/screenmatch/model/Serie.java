@@ -1,7 +1,10 @@
 package com.aluracursos.screenmatch.model;
 
+
+import com.aluracursos.screenmatch.service.ConsultaDeepL;
 import com.fasterxml.jackson.annotation.JsonAlias;
 
+import java.io.IOException;
 import java.util.OptionalDouble;
 
 public class Serie {
@@ -22,13 +25,13 @@ public class Serie {
 
     private String poster;
 
-    public  Serie(DatosSerie datosSerie){
+    public  Serie(DatosSerie datosSerie) throws IOException, InterruptedException {
         this.titulo = datosSerie.titulo();
         this.totalDeTemporadas = datosSerie.totalDeTemporadas();
         this.evaluacion = OptionalDouble.of(Double.valueOf(datosSerie.evaluacion())).orElse(0);
         this.poster = datosSerie.poster();
         this.genero = Categoria.fromString(datosSerie.genero().split(",")[0].trim());
-        this.reseña = datosSerie.reseña();
+        this.reseña = ConsultaDeepL.obtenerTraduccion(datosSerie.reseña());
 
     }
 

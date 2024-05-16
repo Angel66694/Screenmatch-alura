@@ -7,6 +7,7 @@ import com.aluracursos.screenmatch.service.ConsumoAPI;
 import com.aluracursos.screenmatch.service.ConvierteDatos;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -85,7 +86,15 @@ public class Principal {
     private void mostrarSeriesBuscadas() {
         List<Serie> series = new ArrayList<>();
         series = datosSeries.stream()
-                .map(d -> new Serie(d))
+                .map(d -> {
+                    try {
+                        return new Serie(d);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
                 .collect(Collectors.toList());
 
         series.stream()
