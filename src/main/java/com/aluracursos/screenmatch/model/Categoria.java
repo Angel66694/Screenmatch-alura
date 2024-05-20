@@ -1,18 +1,21 @@
 package com.aluracursos.screenmatch.model;
 
-import jdk.jfr.Category;
-
 public enum Categoria {
-    ACCION("Action"),
-    ROMANCE("Romance"),
-    COMEDIA("Comedy"),
-    DRAMA("Drama"),
-    CRIMEN("Crime");
+    ACCION("Action", "Acción"),
+    AVENTURA("Adventure", "Aventura"),
+    ROMANCE("Romance", "Romance"),
+    COMEDIA("Comedy", "Comedia"),
+    DRAMA("Drama", "Drama"),
+    CRIMEN("Crime", "Crimen"),
+    UNKNOWN("Unknown", "Unknown");
+
 
     private String categoriaOmdb;
 
-    Categoria(String categoriaOmdb) {
+    private String categoriaEspanol;
+    Categoria(String categoriaOmdb, String categoriaEspanol) {
         this.categoriaOmdb = categoriaOmdb;
+        this.categoriaEspanol = categoriaEspanol;
     }
 
     public static Categoria fromString(String text) {
@@ -22,7 +25,17 @@ public enum Categoria {
             }
 
         }
-        throw new IllegalArgumentException("Ninguna categoria encontrada: " + text);
+
+        return null;
+    }
+    public static Categoria fromEspanol(String text)  {
+        for (Categoria categoria : Categoria.values()) {
+            if (categoria.categoriaEspanol.equalsIgnoreCase(text)) {
+                return categoria;
+            }
+        }
+        System.out.println("Ninguna categoria encontrada: " + text);
+        return null;
 
     }
 }

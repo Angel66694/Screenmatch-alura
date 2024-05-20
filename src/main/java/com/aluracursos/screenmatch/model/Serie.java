@@ -1,50 +1,75 @@
 package com.aluracursos.screenmatch.model;
 
 
-import com.aluracursos.screenmatch.service.ConsultaDeepL;
-import com.fasterxml.jackson.annotation.JsonAlias;
+import jakarta.persistence.*;
 
-import java.io.IOException;
+import java.util.List;
 import java.util.OptionalDouble;
 
+
+@Entity
+@Table(name = "series")
 public class Serie {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @Column(unique = true)
     private String titulo;
 
+
+
     private Integer totalDeTemporadas;
-
     private Double evaluacion;
-
-    private String fechaDeLanzamiento;
-
-    private String director;
-
+    private String poster;
+    private String actores;
+    @Enumerated(EnumType.STRING)
+    private Categoria genero;
     private String reseña;
 
-    private Categoria genero;
+    @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Episodio> episodios;
 
-    private String poster;
+    public Serie() {}
 
-    public  Serie(DatosSerie datosSerie) throws IOException, InterruptedException {
+    public Serie(DatosSerie datosSerie)  {
         this.titulo = datosSerie.titulo();
         this.totalDeTemporadas = datosSerie.totalDeTemporadas();
-        this.evaluacion = OptionalDouble.of(Double.valueOf(datosSerie.evaluacion())).orElse(0);
+        this.evaluacion = OptionalDouble.of(Double.valueOf(datosSerie.evaluacion()))
+                .orElse(0);
         this.poster = datosSerie.poster();
+        this.actores = datosSerie.actores();
         this.genero = Categoria.fromString(datosSerie.genero().split(",")[0].trim());
-        this.reseña = ConsultaDeepL.obtenerTraduccion(datosSerie.reseña());
+        this.reseña = datosSerie.reseña();
 
     }
-
     @Override
     public String toString() {
         return " genero= " + genero +
-               " titulo= '" + titulo + '\'' +
-               ", totalDeTemporadas= " + totalDeTemporadas +
-               ", evaluacion= " + evaluacion +
-               ", fechaDeLanzamiento= '" + fechaDeLanzamiento + '\'' +
-               ", director= '" + director + '\'' +
-               ", reseña= '" + reseña + '\'' +
-               ", poster= '" + poster + '\'';
+                " titulo= '" + titulo + '\'' +
+                ", totalDeTemporadas= " + totalDeTemporadas +
+                ", evaluacion= " + evaluacion +
+                ", actores= '" + actores + '\'' +
+                ", reseña= '" + reseña + '\'' +
+                ", poster= '" + poster + '\'' +
+                ", episodios= '" + episodios + '\'';
+    }
+    public List<Episodio> getEpisodios() {
+        return episodios;
+    }
+
+    public void setEpisodios(List<Episodio> episodios) {
+        episodios.forEach(e -> e.setSerie(this));
+        this.episodios = episodios;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getTitulo() {
@@ -71,28 +96,12 @@ public class Serie {
         this.evaluacion = evaluacion;
     }
 
-    public String getFechaDeLanzamiento() {
-        return fechaDeLanzamiento;
+    public String getPoster() {
+        return poster;
     }
 
-    public void setFechaDeLanzamiento(String fechaDeLanzamiento) {
-        this.fechaDeLanzamiento = fechaDeLanzamiento;
-    }
-
-    public String getDirector() {
-        return director;
-    }
-
-    public void setDirector(String director) {
-        this.director = director;
-    }
-
-    public String getReseña() {
-        return reseña;
-    }
-
-    public void setReseña(String reseña) {
-        this.reseña = reseña;
+    public void setPoster(String poster) {
+        this.poster = poster;
     }
 
     public Categoria getGenero() {
@@ -103,11 +112,13 @@ public class Serie {
         this.genero = genero;
     }
 
-    public String getPoster() {
-        return poster;
+    public String getActores() {return actores;}
+
+    public void setActores(String actores) {this.actores = actores;}
+
+    public String getReseña() {return reseña;
     }
 
-    public void setPoster(String poster) {
-        this.poster = poster;
-    }
+    public void setReseña(String reseña) {this.reseña = reseña;}
+
 }
