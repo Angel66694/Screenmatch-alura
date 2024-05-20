@@ -26,10 +26,7 @@ public class ConsultaDeepL {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() == 200) {
-            // Procesar la respuesta JSON y extraer la traducción
             String responseBody = response.body();
-            // Aquí se asume que la respuesta tiene el formato JSON esperado
-            // {"translations":[{"detected_source_language":"EN","text":"texto traducido"}]}
             int start = responseBody.indexOf("\"text\":\"") + 8;
             int end = responseBody.indexOf("\"", start);
             return responseBody.substring(start, end);
